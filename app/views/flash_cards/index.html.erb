@@ -13,17 +13,17 @@ $(document).ready(function() {
       <span class="glyphicon glyphicon-plus"></span>
       Add card
     </button>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu dropdown-form">
       <%= form_for :flash_card do |f| %>
-        <p>
-          <%= f.label      :question %><br />
-          <%= f.text_field :question %>
-        </p>
-        <p>
-          <%= f.label      :answer %><br />
-          <%= f.text_field :answer %>
-        </p>
-        <p><%= f.submit %></p>
+        <div class="form-group">
+          <%= f.label      :question, class: 'sr-only' %>
+          <%= f.text_field :question, placeholder: 'Question' %>
+        </div>
+        <div class="form-group">
+          <%= f.label      :answer, class: 'sr-only' %>
+          <%= f.text_field :answer, placeholder: 'Answer' %>
+        </div>
+        <%= f.submit 'Save', class: 'btn btn-block btn-primary' %>
       <% end %>
     </div>
   </div>
@@ -38,7 +38,7 @@ $(document).ready(function() {
     <li class="list-group-item">
       <span class="h1"><%= card.question %> -- <%= card.answer %></span>
       <span class="pull-right">
-	Next review: <%= card.next_review_date %>
+        Next review: <%= card.next_review_date %>
       </span>
     </li>
   <% end %>

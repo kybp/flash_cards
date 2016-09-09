@@ -3,3 +3,10 @@
  *= require_self
  *= require bootstrap-sass-official
  */
+
+div.dropdown-form {
+  padding-left:   15px;
+  padding-right:  15px;
+  padding-top:    10px;
+  padding-bottom: 10px;
+}
