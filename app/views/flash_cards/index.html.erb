@@ -1,0 +1,12 @@
+<h1>Flash Cards</h1>
+
+<% if @flash_cards.empty? %>
+  <h2>No cards available</h2>
+<% end %>
+
+<% @flash_cards.each do |card| %>
+  <div style="border: 1px solid black">
+    <h1><%= card.question %> -- <%= card.answer %></h1>
+    <h2>Next review on <%= card.next_review_date %></h2>
+  </div>
+<% end %>
