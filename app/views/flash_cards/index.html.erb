@@ -1,4 +1,10 @@
-<h1>Flash Cards</h1>
+<h1>Flash Cards
+  <%= link_to new_flash_card_path,
+              class: 'btn btn-lg btn-success pull-right' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Add card
+  <% end %>
+</h1>
 
 <% if @flash_cards.empty? %>
   <h2>No cards available</h2>
