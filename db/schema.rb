@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909015425) do
+ActiveRecord::Schema.define(version: 20160909095621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "flash_cards", force: :cascade do |t|
-    t.string   "question",                                    null: false
-    t.string   "answer",                                      null: false
-    t.float    "easiness",             default: 2.5,          null: false
-    t.integer  "repetitions",          default: 0,            null: false
-    t.integer  "review_interval",      default: 1,            null: false
+    t.string   "question",                           null: false
+    t.string   "answer",                             null: false
+    t.float    "easiness",             default: 2.5, null: false
+    t.integer  "repetitions",          default: 0,   null: false
+    t.integer  "review_interval",      default: 1,   null: false
     t.integer  "last_review_interval"
-    t.date     "next_review_date",     default: '2016-09-08', null: false
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.date     "next_review_date",                   null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
 end

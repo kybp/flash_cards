@@ -1,4 +1,10 @@
 class FlashCard < ApplicationRecord
+  after_initialize :set_first_review_date
+
+  def set_first_review_date
+    self.next_review_date ||= Date.today
+  end
+
   def answer!(response_quality)
     self.repetitions += 1
     next_review_interval!
