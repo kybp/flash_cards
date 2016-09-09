@@ -1,3 +1,11 @@
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.dropdown').on('shown.bs.dropdown', function() {
+    $('#flash_card_question').focus()
+  })
+})
+</script>
+
 <h1>Flash Cards
   <div class="dropdown pull-right">
     <button class="btn btn-lg btn-success dropdown-toggle"
