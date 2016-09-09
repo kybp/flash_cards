@@ -31,12 +31,22 @@ $(document).ready(function() {
 
 <div ng-app="flashCards" ng-controller="flashCardController">
   <h2 ng-show="cards.length === 0">No cards available</h2>
-  <ul ng-show="cards.length > 0" class="list-group">
-    <li ng-repeat="card in cards" class="list-group-item">
-      <span class="h1">{{card.question}} -- {{card.answer}}</span>
-      <span class="pull-right">
-        Next review: {{card.next_review_date}}
-      </span>
-    </li>
-  </ul>
+
+  <h2 ng-show="doneReview">
+    Congratulations! You don't have any more cards to study today.
+  </h2>
+
+  <div ng-show="cards.length > 0">
+    <button ng-hide="beganReview" ng-click="beginReview()"
+            class="btn btn-lg btn-primary">
+      Start
+    </button>
+
+    <div ng-repeat="card in cards"
+         ng-show="currentIndex === $index && beganReview && ! doneReview">
+      <h2>{{card.question}} -- {{card.answer}}
+        <small>{{secondsLeft}}</small>
+      </h2>
+    </div>
+  </div>
 </div>
