@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
 //= require bootstrap-sass-official
+//= require angular
+//= require_tree .
