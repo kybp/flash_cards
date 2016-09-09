@@ -3,9 +3,6 @@ class FlashCardsController < ApplicationController
     @flash_cards = FlashCard.all
   end
 
-  def new
-  end
-
   def create
     @flash_card = FlashCard.new(flash_card_params)
     @flash_card.save
