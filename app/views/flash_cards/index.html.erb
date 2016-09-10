@@ -34,17 +34,21 @@ $(document).ready(function() {
     Congratulations! You don't have any more cards to study today.
   </h2>
 
-  <div ng-show="cards.length > 0">
-    <button ng-hide="beganReview" ng-click="beginReview()"
-            class="btn btn-lg btn-primary">
-      Start review
-    </button>
+  <div ng-show="cards.length > 0" class="col-md-6 col-md-offset-3">
+    <div class="text-center">
+      <button ng-hide="beganReview" ng-click="beginReview()"
+              class="btn btn-lg btn-primary">
+        Begin review
+      </button>
 
-    <div ng-repeat="card in cards"
-         ng-show="currentIndex === $index && beganReview">
-      <h2>{{card.question}} <small>{{secondsLeft}}</small></h2>
-      <input ng-model="guess"
-             ng-change="checkAnswer(guess, card.answer)" />
+      <div ng-repeat="card in cards"
+           ng-show="currentIndex === $index && beganReview"
+           class="panel panel-default">
+        <div class="panel-heading">{{card.question}}</div>
+        <div class="panel-body">
+          <input ng-model="guess" ng-change="checkAnswer(guess)" />
+        </div>
+      </div>
     </div>
   </div>
 </div>

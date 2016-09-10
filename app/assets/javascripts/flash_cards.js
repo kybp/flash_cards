@@ -3,6 +3,8 @@ const flashCardController =
   const SECONDS_PER_CARD = 10
 
   const reset = function() {
+    $scope.cards = []
+
     $http.get('/flash_cards.json')
       .then(function(response) {
         $scope.cards = response.data
@@ -46,7 +48,8 @@ const flashCardController =
       $scope.onTimeout()
     }
 
-    $scope.checkAnswer = function(guess, answer) {
+    $scope.checkAnswer = function(guess) {
+      const answer = $scope.cards[$scope.currentIndex].answer
       if (guess == answer) nextCard()
     }
 
