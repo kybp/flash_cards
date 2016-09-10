@@ -2,15 +2,16 @@ const flashCardController =
 ['$http', '$scope', '$timeout', function($http, $scope, $timeout) {
   const SECONDS_PER_CARD = 10
 
-  $http.get('/flash_cards.json')
-    .then(function(response) {
-      $scope.cards = response.data
-    }, function(response) {
-      alert('error fetching cards: ' + response.status)
-    })
+  const reset = function() {
+    $http.get('/flash_cards.json')
+      .then(function(response) {
+        $scope.cards = response.data
+      }, function(response) {
+        alert('error fetching cards: ' + response.status)
+      })
 
-  $scope.beganReview = false
-  $scope.doneReview  = false
+    $scope.beganReview = false
+  }
 
   $scope.beginReview = function() {
     $scope.beganReview  = true
@@ -30,7 +31,7 @@ const flashCardController =
         scheduleTimeout()
       } else {
         $timeout.cancel(timeout)
-        $scope.doneReview = true
+        reset()
       }
     }
 
@@ -55,6 +56,8 @@ const flashCardController =
 
     scheduleTimeout()
   }
+
+  reset()
 }]
 
 angular

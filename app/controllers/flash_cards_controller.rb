@@ -1,6 +1,6 @@
 class FlashCardsController < ApplicationController
   def index
-    @flash_cards = FlashCard.all
+    @flash_cards = FlashCard.where('next_review_date <= ?', Date.today)
 
     respond_to do |format|
       format.html {}

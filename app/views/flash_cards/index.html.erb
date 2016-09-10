@@ -30,20 +30,18 @@ $(document).ready(function() {
 </h1>
 
 <div ng-app="flashCards" ng-controller="flashCardController">
-  <h2 ng-show="cards.length === 0">No cards available</h2>
-
-  <h2 ng-show="doneReview">
+  <h2 ng-show="cards.length === 0">
     Congratulations! You don't have any more cards to study today.
   </h2>
 
   <div ng-show="cards.length > 0">
     <button ng-hide="beganReview" ng-click="beginReview()"
             class="btn btn-lg btn-primary">
-      Start
+      Start review
     </button>
 
     <div ng-repeat="card in cards"
-         ng-show="currentIndex === $index && beganReview && ! doneReview">
+         ng-show="currentIndex === $index && beganReview">
       <h2>{{card.question}} <small>{{secondsLeft}}</small></h2>
       <input ng-model="guess"
              ng-change="checkAnswer(guess, card.answer)" />
