@@ -35,6 +35,11 @@ const flashCardController =
     }
 
     const nextCard = function() {
+      const id   = $scope.cards[$scope.currentIndex].id
+      const url  = '/flash_cards/' + id + '/answer'
+      const data = { response_quality: $scope.secondsLeft / 3 + 2 }
+      $http.post(url, JSON.stringify(data))
+
       $scope.secondsLeft = 0
       $timeout.cancel(timeout)
       $scope.onTimeout()
