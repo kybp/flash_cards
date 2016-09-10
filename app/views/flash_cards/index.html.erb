@@ -44,9 +44,9 @@ $(document).ready(function() {
 
     <div ng-repeat="card in cards"
          ng-show="currentIndex === $index && beganReview && ! doneReview">
-      <h2>{{card.question}} -- {{card.answer}}
-        <small>{{secondsLeft}}</small>
-      </h2>
+      <h2>{{card.question}} <small>{{secondsLeft}}</small></h2>
+      <input ng-model="guess"
+             ng-change="checkAnswer(guess, card.answer)" />
     </div>
   </div>
 </div>

@@ -19,23 +19,36 @@ const flashCardController =
     let timeout
 
     $scope.onTimeout = function() {
-      const cardsRemaining = $scope.currentIndex + 1 < $scope.cards.length
       --$scope.secondsLeft
 
-      if (cardsRemaining && $scope.secondsLeft === 0) {
+      if ($scope.secondsLeft <= 0) {
         ++$scope.currentIndex
         $scope.secondsLeft = SECONDS_PER_CARD
       }
 
-      if (cardsRemaining) {
-        timeout = $timeout($scope.onTimeout, 1000)
+      if ($scope.currentIndex < $scope.cards.length) {
+        scheduleTimeout()
       } else {
         $timeout.cancel(timeout)
         $scope.doneReview = true
       }
     }
 
-    timeout = $timeout($scope.onTimeout, 1000)
+    const nextCard = function() {
+      $scope.secondsLeft = 0
+      $timeout.cancel(timeout)
+      $scope.onTimeout()
+    }
+
+    $scope.checkAnswer = function(guess, answer) {
+      if (guess == answer) nextCard()
+    }
+
+    const scheduleTimeout = function() {
+      timeout = $timeout($scope.onTimeout, 1000)
+    }
+
+    scheduleTimeout()
   }
 }]
 
