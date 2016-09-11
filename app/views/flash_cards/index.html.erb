@@ -14,7 +14,7 @@ $(document).ready(function() {
       Add card
     </button>
     <div class="dropdown-menu dropdown-form">
-      <%= form_for :flash_card do |f| %>
+      <%= form_for :flash_card, url: flash_cards_path do |f| %>
         <div class="form-group">
           <%= f.label      :question, class: 'sr-only' %>
           <%= f.text_field :question, placeholder: 'Question' %>
@@ -30,23 +30,32 @@ $(document).ready(function() {
 </h1>
 
 <div ng-app="flashCards" ng-controller="flashCardController">
-  <h2 ng-show="cards.length === 0">
+  <h2 ng-hide="card">
     Congratulations! You don't have any more cards to study today.
   </h2>
 
-  <div ng-show="cards.length > 0" class="col-md-6 col-md-offset-3">
+  <div ng-show="card" class="col-md-6 col-md-offset-3">
     <div class="text-center">
       <button ng-hide="beganReview" ng-click="beginReview()"
               class="btn btn-lg btn-primary">
         Begin review
       </button>
 
-      <div ng-repeat="card in cards"
-           ng-show="currentIndex === $index && beganReview"
-           class="panel panel-default">
-        <div class="panel-heading">{{card.question}}</div>
+      <div ng-show="beganReview" class="panel panel-{{answerStatus()}}">
+        <div class="panel-heading">
+          {{card.question}}
+        </div>
         <div class="panel-body">
-          <input ng-model="guess" ng-change="checkAnswer(guess)" />
+          <form ng-submit="submitAnswer()">
+            <input ng-model="guess" id="guess-input" />
+          </form>
+        </div>
+
+        <div class="panel-footer">
+        <button ng-show="betweenCards" ng-click="getNextCard(true)"
+                class="btn btn-primary">
+          Next
+        </button>
         </div>
       </div>
     </div>

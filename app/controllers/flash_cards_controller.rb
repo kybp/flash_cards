@@ -1,10 +1,14 @@
 class FlashCardsController < ApplicationController
   def index
-    @flash_cards = FlashCard.where('next_review_date <= ?', Date.today)
+  end
 
+  def next
+    cards = FlashCard
+      .where('next_review_date <= ?', Date.today)
+      .order(updated_at: :desc)
+      .limit(1)
     respond_to do |format|
-      format.html {}
-      format.json { render json: @flash_cards }
+      format.json { render json: cards.empty? ? nil : cards[0] }
     end
   end
 

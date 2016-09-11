@@ -1,66 +1,80 @@
 const flashCardController =
 ['$http', '$scope', '$timeout', function($http, $scope, $timeout) {
-  const SECONDS_PER_CARD = 10
+  $scope.guess        = ''
+  $scope.beganReview  = false
+  $scope.betweenCards = false
 
-  const reset = function() {
-    $scope.cards = []
-
-    $http.get('/flash_cards.json')
+  $scope.getNextCard = function(shouldStartTimerAfterFetch) {
+    $http.get('/flash_cards/next.json')
       .then(function(response) {
-        $scope.cards = response.data
-      }, function(response) {
-        alert('error fetching cards: ' + response.status)
-      })
+        $scope.card         = response.data
+        $scope.secondsLeft  = 10
+        $scope.betweenCards = false
 
-    $scope.beganReview = false
+        const input = document.getElementById('guess-input')
+        input.disabled = false
+        input.value    = ''
+        if (shouldStartTimerAfterFetch) scheduleTimeout()
+      }, function(response) {
+        alert('error fetching card: ' + response.status)
+      })
+  }
+
+  let timeout
+
+  const scheduleTimeout = function() {
+    timeout = $timeout($scope.onTimeout, 1000)
+  }
+
+  const waitBetweenCards = function() {
+    document.getElementById('guess-input').disabled = true
+    $scope.betweenCards = true
+  }
+
+  $scope.onTimeout = function() {
+    --$scope.secondsLeft
+
+    if ($scope.secondsLeft <= 0) {
+      waitBetweenCards()
+    } else {
+      scheduleTimeout()
+    }
+  }
+
+  const checkAnswer = function() {
+    return $scope.guess === $scope.card.answer
+  }
+
+  $scope.submitAnswer = function() {
+    if (checkAnswer()) {
+      $timeout.cancel(timeout)
+      saveResponseQuality()
+    }
+    waitBetweenCards()
+  }
+
+  const saveResponseQuality = function() {
+    const url  = '/flash_cards/' + $scope.card.id + '/answer'
+    const data = { response_quality: $scope.secondsLeft / 3 + 2 }
+    $http.post(url, JSON.stringify(data))
+  }
+
+  $scope.answerStatus = function() {
+    if (! $scope.betweenCards) {
+      return 'default'
+    } else if (checkAnswer()) {
+      return 'success'
+    } else {
+      return 'danger'
+    }
   }
 
   $scope.beginReview = function() {
-    $scope.beganReview  = true
-    $scope.currentIndex = 0
-    $scope.secondsLeft  = SECONDS_PER_CARD
-    let timeout
-
-    $scope.onTimeout = function() {
-      --$scope.secondsLeft
-
-      if ($scope.secondsLeft <= 0) {
-        ++$scope.currentIndex
-        $scope.secondsLeft = SECONDS_PER_CARD
-      }
-
-      if ($scope.currentIndex < $scope.cards.length) {
-        scheduleTimeout()
-      } else {
-        $timeout.cancel(timeout)
-        reset()
-      }
-    }
-
-    const nextCard = function() {
-      const id   = $scope.cards[$scope.currentIndex].id
-      const url  = '/flash_cards/' + id + '/answer'
-      const data = { response_quality: $scope.secondsLeft / 3 + 2 }
-      $http.post(url, JSON.stringify(data))
-
-      $scope.secondsLeft = 0
-      $timeout.cancel(timeout)
-      $scope.onTimeout()
-    }
-
-    $scope.checkAnswer = function(guess) {
-      const answer = $scope.cards[$scope.currentIndex].answer
-      if (guess == answer) nextCard()
-    }
-
-    const scheduleTimeout = function() {
-      timeout = $timeout($scope.onTimeout, 1000)
-    }
-
+    $scope.beganReview = true
     scheduleTimeout()
   }
 
-  reset()
+  $scope.getNextCard(false)
 }]
 
 angular
