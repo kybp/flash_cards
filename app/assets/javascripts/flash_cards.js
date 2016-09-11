@@ -1,15 +1,28 @@
+const focusOn =
+['$timeout', function($timeout) {
+  return function(scope, elements, attrs) {
+    scope.$watch(attrs.focusOn, function(value) {
+      $timeout(function() {
+        if (value) elements[0].focus()
+      })
+    })
+  }
+}]
+
 const flashCardController =
 ['$http', '$scope', '$timeout', function($http, $scope, $timeout) {
+  const NEXT_CARD_URL    = '/flash_cards/next.json'
   const SECONDS_PER_CARD = 10
   const TICKS_PER_SECOND = 15
   let ticks = 0
 
   $scope.guess        = ''
   $scope.beganReview  = false
-  $scope.betweenCards = false
+  $scope.betweenCards = true
 
-  $scope.getNextCard = function(shouldStartTimerAfterFetch) {
-    $http.get('/flash_cards/next.json')
+  $scope.getNextCard = function() {
+    $timeout.cancel(timeout)
+    $http.get(NEXT_CARD_URL)
       .then(function(response) {
         $scope.card         = response.data
         ticks               = SECONDS_PER_CARD * TICKS_PER_SECOND
@@ -19,7 +32,7 @@ const flashCardController =
         const input = document.getElementById('guess-input')
         input.disabled = false
         input.value    = ''
-        if (shouldStartTimerAfterFetch) scheduleTimeout()
+        scheduleTimeout()
       }, function(response) {
         alert('error fetching card: ' + response.status)
       })
@@ -53,21 +66,19 @@ const flashCardController =
   }
 
   $scope.submitAnswer = function() {
-    if (checkAnswer()) {
-      $timeout.cancel(timeout)
-      saveResponseQuality()
-    }
+    if ($scope.guess === '') return
+    saveResponseQuality(checkAnswer() ? null : 1)
     waitBetweenCards()
   }
 
-  const saveResponseQuality = function() {
+  const saveResponseQuality = function(quality) {
     const url  = '/flash_cards/' + $scope.card.id + '/answer'
-    const data = { response_quality: $scope.secondsLeft / 3 + 2 }
+    const data = { response_quality: quality || $scope.secondsLeft / 3 + 2 }
     $http.post(url, JSON.stringify(data))
   }
 
   $scope.answerStatus = function() {
-    if (! $scope.betweenCards) {
+    if (! $scope.betweenCards || ! $scope.card) {
       return 'default'
     } else if (checkAnswer()) {
       return 'success'
@@ -78,7 +89,7 @@ const flashCardController =
 
   $scope.beginReview = function() {
     $scope.beganReview = true
-    scheduleTimeout()
+    $scope.getNextCard()
   }
 
   $scope.timePercent = function() {
@@ -87,14 +98,19 @@ const flashCardController =
 
   $scope.timeStatus = function() {
     const percent = $scope.timePercent()
-    if (percent > 66)      return 'success'
+    if      (percent > 66) return 'success'
     else if (percent > 33) return 'warning'
     else                   return 'danger'
   }
 
-  $scope.getNextCard(false)
+  $http.get(NEXT_CARD_URL).then(
+    function(response) {
+      $scope.card = response.data
+    }
+  )
 }]
 
 angular
   .module('flashCards', [])
   .controller('flashCardController', flashCardController)
+  .directive('focusOn', focusOn)
