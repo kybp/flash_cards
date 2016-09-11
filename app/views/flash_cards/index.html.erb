@@ -54,7 +54,8 @@ $(document).ready(function() {
         <div class="panel-footer">
           <div ng-hide="betweenCards" class="progress"
                style="margin-bottom: 0">
-            <div class="progress-bar" style="width: {{timePercent()}}%">
+            <div class="progress-bar progress-bar-{{timeStatus()}}"
+                 style="width: {{timePercent()}}%">
             </div>
           </div>
 

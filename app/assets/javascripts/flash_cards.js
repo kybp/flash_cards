@@ -85,6 +85,13 @@ const flashCardController =
     return ticks * 100 / (SECONDS_PER_CARD * TICKS_PER_SECOND)
   }
 
+  $scope.timeStatus = function() {
+    const percent = $scope.timePercent()
+    if (percent > 66)      return 'success'
+    else if (percent > 33) return 'warning'
+    else                   return 'danger'
+  }
+
   $scope.getNextCard(false)
 }]
 
