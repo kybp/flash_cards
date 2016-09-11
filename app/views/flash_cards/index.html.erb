@@ -52,10 +52,16 @@ $(document).ready(function() {
         </div>
 
         <div class="panel-footer">
-        <button ng-show="betweenCards" ng-click="getNextCard(true)"
-                class="btn btn-primary">
-          Next
-        </button>
+          <div ng-hide="betweenCards" class="progress"
+               style="margin-bottom: 0">
+            <div class="progress-bar" style="width: {{timePercent()}}%">
+            </div>
+          </div>
+
+          <button ng-show="betweenCards" ng-click="getNextCard(true)"
+                  class="btn btn-xs btn-primary">
+            Next
+          </button>
         </div>
       </div>
     </div>

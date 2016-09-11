@@ -1,5 +1,9 @@
 const flashCardController =
 ['$http', '$scope', '$timeout', function($http, $scope, $timeout) {
+  const SECONDS_PER_CARD = 10
+  const TICKS_PER_SECOND = 15
+  let ticks = 0
+
   $scope.guess        = ''
   $scope.beganReview  = false
   $scope.betweenCards = false
@@ -8,7 +12,8 @@ const flashCardController =
     $http.get('/flash_cards/next.json')
       .then(function(response) {
         $scope.card         = response.data
-        $scope.secondsLeft  = 10
+        ticks               = SECONDS_PER_CARD * TICKS_PER_SECOND
+        $scope.secondsLeft  = SECONDS_PER_CARD
         $scope.betweenCards = false
 
         const input = document.getElementById('guess-input')
@@ -23,7 +28,8 @@ const flashCardController =
   let timeout
 
   const scheduleTimeout = function() {
-    timeout = $timeout($scope.onTimeout, 1000)
+    const ms = 1000 / TICKS_PER_SECOND
+    timeout = $timeout($scope.onTimeout, ms)
   }
 
   const waitBetweenCards = function() {
@@ -32,7 +38,8 @@ const flashCardController =
   }
 
   $scope.onTimeout = function() {
-    --$scope.secondsLeft
+    --ticks
+    if (ticks % TICKS_PER_SECOND === 0) --$scope.secondsLeft
 
     if ($scope.secondsLeft <= 0) {
       waitBetweenCards()
@@ -72,6 +79,10 @@ const flashCardController =
   $scope.beginReview = function() {
     $scope.beganReview = true
     scheduleTimeout()
+  }
+
+  $scope.timePercent = function() {
+    return ticks * 100 / (SECONDS_PER_CARD * TICKS_PER_SECOND)
   }
 
   $scope.getNextCard(false)
