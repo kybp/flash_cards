@@ -1,24 +1,14 @@
-# README
+# Flash Cards
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a small spaced repetition flash card app, using Rails, Angular,
+and Bootstrap. It's far from complete (for example, it's single-user).
+Mostly just something I'm playing with to learn these frameworks better.
 
-Things you may want to cover:
+## Installation
 
-* Ruby version
+Requires Ruby 2.2+ and Postgres. Then in the root project directory:
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    bundle install
+    rake db:create
+    rake db:migrate
+    rails server
