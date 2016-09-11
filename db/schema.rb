@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909095621) do
+ActiveRecord::Schema.define(version: 20160911074702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20160909095621) do
     t.date     "next_review_date",                   null: false
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.index ["question"], name: "index_flash_cards_on_question", unique: true, using: :btree
   end
 
 end

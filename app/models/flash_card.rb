@@ -1,4 +1,5 @@
 class FlashCard < ApplicationRecord
+  validates :question, uniqueness: true
   after_initialize :set_first_review_date
 
   def set_first_review_date
