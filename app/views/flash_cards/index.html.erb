@@ -29,41 +29,42 @@ $(document).ready(function() {
   </div>
 </h1>
 
-<div ng-app="flashCards" ng-controller="flashCardController">
-  <h2 ng-hide="card">
+<div ng-app="flashCards" ng-controller="flashCardController"
+     class="vertical-center">
+  <h2 ng-hide="card" 
+      class="text-center col-xs-12 col-md-6 col-md-offset-3">
     Congratulations! You don't have any more cards to study today.
   </h2>
 
-  <div ng-show="card" class="col-md-6 col-md-offset-3">
-    <div class="text-center">
-      <button ng-hide="beganReview" ng-click="beginReview()"
-              class="btn btn-lg btn-primary">
-        Begin review
-      </button>
+  <div ng-show="card"
+       class="text-center col-xs-12 col-md-6 col-md-offset-3">
+    <button ng-hide="beganReview" ng-click="beginReview()"
+            class="btn btn-lg btn-primary">
+      Begin review
+    </button>
 
-      <div ng-show="beganReview" class="panel panel-{{answerStatus()}}">
-        <div class="panel-heading">
-          {{card.question}}
-        </div>
-        <div class="panel-body">
-          <form ng-submit="submitAnswer()">
-            <input ng-model="guess" id="guess-input" />
-          </form>
-        </div>
+    <div ng-show="beganReview" class="panel panel-{{answerStatus()}}">
+      <div class="panel-heading">
+        {{card.question}}
+      </div>
+      <div class="panel-body">
+        <form ng-submit="submitAnswer()">
+          <input ng-model="guess" id="guess-input" />
+        </form>
+      </div>
 
-        <div class="panel-footer">
-          <div ng-hide="betweenCards" class="progress"
-               style="margin-bottom: 0">
-            <div class="progress-bar progress-bar-{{timeStatus()}}"
-                 style="width: {{timePercent()}}%">
-            </div>
+      <div class="panel-footer">
+        <div ng-hide="betweenCards" class="progress"
+             style="margin-bottom: 0">
+          <div class="progress-bar progress-bar-{{timeStatus()}}"
+               style="width: {{timePercent()}}%">
           </div>
-
-          <button ng-show="betweenCards" ng-click="getNextCard(true)"
-                  class="btn btn-xs btn-primary">
-            Next
-          </button>
         </div>
+
+        <button ng-show="betweenCards" ng-click="getNextCard(true)"
+                class="btn btn-xs btn-primary">
+          Next
+        </button>
       </div>
     </div>
   </div>

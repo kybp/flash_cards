@@ -15,3 +15,9 @@ div.dropdown-form {
   -webkit-transition: none !important;
           transition: none !important;
  }
+
+ .vertical-center {
+   min-height:  80vh;
+   display:     flex;
+   align-items: center;
+ }
