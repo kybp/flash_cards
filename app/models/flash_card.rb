@@ -1,6 +1,7 @@
 class FlashCard < ApplicationRecord
-  validates :question, uniqueness: true
+  validates :question, uniqueness: { scope: :user_id }
   after_initialize :set_first_review_date
+  belongs_to :user
 
   def set_first_review_date
     self.next_review_date ||= Date.today
@@ -24,7 +25,7 @@ class FlashCard < ApplicationRecord
     save!
   end
 
-#  private
+  private
 
   def next_review_interval!
     current_interval = review_interval
@@ -48,6 +49,7 @@ class FlashCard < ApplicationRecord
     end
 
     self.easiness = [1.1, easiness].max +
-      (0.1 - (5 - response_quality) * (0.08 + (5 - response_quality) * 0.02))
+      (0.1 - (5 - response_quality) *
+       (0.08 + (5 - response_quality) * 0.02))
   end
 end

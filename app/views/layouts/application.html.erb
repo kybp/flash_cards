@@ -8,6 +8,14 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+  <% flash.each do |type, message| %>
+    <% if type == 'notice' %>
+      <div class="alert alert-info"><%= message %></div>
+    <% elsif type == 'alert' %>
+      <div class="alert alert-danger"><%= message %></div>
+    <% end %>
+  <% end %>
+
   <body class="container">
     <%= yield %>
   </body>

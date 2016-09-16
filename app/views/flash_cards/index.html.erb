@@ -7,6 +7,9 @@ $(document).ready(function() {
 </script>
 
 <h1>Flash Cards
+  <%= link_to 'Sign out', destroy_user_session_path, method: :delete,
+              style: 'margin-left: 10px',
+              class: 'btn btn-lg btn-danger pull-right' %>
   <div class="dropdown pull-right">
     <button class="btn btn-lg btn-success dropdown-toggle"
             data-toggle="dropdown">

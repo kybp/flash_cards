@@ -1,9 +1,12 @@
 class FlashCardsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
   end
 
   def next
     cards = FlashCard
+      .where(user: current_user)
       .where('next_review_date <= ?', Date.today)
       .order(updated_at: :desc)
       .limit(1)
@@ -14,6 +17,7 @@ class FlashCardsController < ApplicationController
 
   def create
     flash_card = FlashCard.new(flash_card_params)
+    flash_card.user_id = current_user.id
     flash_card.save
     redirect_to action: 'index'
   end

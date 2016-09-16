@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'flash_cards#index'
 
   get  '/flash_cards/next',        to: 'flash_cards#next'
