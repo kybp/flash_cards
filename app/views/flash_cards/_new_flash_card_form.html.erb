@@ -1,0 +1,11 @@
+<%= form_for :flash_card, url: flash_cards_path do |f| %>
+  <div class="form-group">
+    <%= f.label      :question, class: 'sr-only' %>
+    <%= f.text_field :question, placeholder: 'Question' %>
+  </div>
+  <div class="form-group">
+    <%= f.label      :answer, class: 'sr-only' %>
+    <%= f.text_field :answer, placeholder: 'Answer' %>
+  </div>
+  <%= f.submit 'Save', class: 'btn btn-block btn-primary' %>
+<% end %>
