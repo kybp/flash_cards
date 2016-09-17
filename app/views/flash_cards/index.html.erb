@@ -6,8 +6,8 @@ $(document).ready(function() {
 })
 </script>
 
-<h1>Flash Cards
-  <div class="dropdown pull-right">
+<% content_for :controls do %>
+  <div class="dropdown">
     <button class="btn btn-lg btn-success dropdown-toggle"
             data-toggle="dropdown">
       <span class="glyphicon glyphicon-plus"></span>
@@ -26,10 +26,11 @@ $(document).ready(function() {
         <%= f.submit 'Save', class: 'btn btn-block btn-primary' %>
       <% end %>
     </div>
-    <%= link_to 'Sign out', destroy_user_session_path, method: :delete,
-    class: 'btn btn-lg btn-danger' %>
   </div>
-</h1>
+
+  <%= link_to 'Sign out', destroy_user_session_path, method: :delete,
+      class: 'btn btn-lg btn-danger' %>
+<% end %>
 
 <div ng-app="flashCards" ng-controller="flashCardController"
      class="vertical-center">

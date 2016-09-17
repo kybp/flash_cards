@@ -28,3 +28,7 @@ input[disabled] {
     border:     0;
     padding:    3px;
 }
+
+#controls > * {
+    display: inline-block;
+}
