@@ -13,6 +13,7 @@ gem 'devise'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'minitest-reporters'
 end
 
 group :development do
