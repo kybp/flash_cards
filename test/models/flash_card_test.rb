@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FlashCardTest < ActiveSupport::TestCase
+class FlashCardTest < TestCase
   def setup
     @valid_question   = 'question'
     @valid_answer     = 'answer'

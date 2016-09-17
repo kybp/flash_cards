@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserTest < ActiveSupport::TestCase
+class UserTest < TestCase
   def setup
     @valid_email    = 'foo@example.com'
     @valid_password = 'asdfasdf'
