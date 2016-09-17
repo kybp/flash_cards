@@ -1,5 +1,6 @@
 class FlashCard < ApplicationRecord
-  validates :question, uniqueness: { scope: :user_id }
+  validates :question, uniqueness: { scope: :user_id }, presence: true
+  validates :answer, presence: true
   after_initialize :set_first_review_date
   belongs_to :user
 
