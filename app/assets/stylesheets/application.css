@@ -5,19 +5,26 @@
  */
 
 div.dropdown-form {
-  padding-left:   15px;
-  padding-right:  15px;
-  padding-top:    10px;
-  padding-bottom: 10px;
+    padding-left:   15px;
+    padding-right:  15px;
+    padding-top:    10px;
+    padding-bottom: 10px;
 }
 
 .progress-bar {
-  -webkit-transition: none !important;
-          transition: none !important;
- }
+    -webkit-transition: none !important;
+            transition: none !important;
+}
 
- .vertical-center {
-   min-height:  80vh;
-   display:     flex;
-   align-items: center;
- }
+.vertical-center {
+    min-height:  80vh;
+    display:     flex;
+    align-items: center;
+}
+
+input[disabled] {
+    background: #DDD;
+    color:      #929292;
+    border:     0;
+    padding:    3px;
+}
