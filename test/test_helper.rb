@@ -4,7 +4,11 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/reporters'
 
-class TestCase < ActiveSupport::TestCase
+class SupportTestCase < ActiveSupport::TestCase
+  attr_accessor :print_name
+end
+
+class ControllerTestCase < ActionController::TestCase
   attr_accessor :print_name
 end
 
