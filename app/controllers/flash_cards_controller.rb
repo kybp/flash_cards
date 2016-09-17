@@ -22,7 +22,6 @@ class FlashCardsController < ApplicationController
     redirect_to action: 'index'
   end
 
-  skip_before_filter :verify_authenticity_token, only: [:answer]
   def answer
     flash_card = FlashCard.find(params[:id])
     if params.has_key? :response_quality
