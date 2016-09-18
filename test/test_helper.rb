@@ -13,6 +13,15 @@ class ControllerTestCase < ActionController::TestCase
 end
 
 class SpecReporter < Minitest::Reporters::SpecReporter
+  protected
+
+  def before_suite(suite)
+    puts suite.to_s
+      .sub(/Test$/, '')
+      .gsub(/([^A-Z])([A-Z])/, '\1 \2')
+      .gsub(/([A-Z][^A-Z])/,   '\1')
+  end
+
   def record_print_status(test)
     if test.print_name
       test_name = test.print_name
