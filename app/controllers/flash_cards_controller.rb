@@ -2,6 +2,12 @@ class FlashCardsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    cards = FlashCard.where(user: current_user)
+
+    respond_to do |format|
+      format.html {}
+      format.json { render json: cards }
+    end
   end
 
   def next
@@ -10,6 +16,7 @@ class FlashCardsController < ApplicationController
       .where('next_review_date <= ?', Date.today)
       .order(updated_at: :desc)
       .limit(1)
+
     respond_to do |format|
       format.json { render json: cards.empty? ? nil : cards[0] }
     end
@@ -17,16 +24,21 @@ class FlashCardsController < ApplicationController
 
   def create
     flash_card = FlashCard.new(flash_card_params)
-    flash_card.user_id = current_user.id
-    flash_card.save
-    redirect_to action: 'index'
+    flash_card.user = current_user
+    if flash_card.save
+      render json: flash_card, status: :created
+    else
+      render json: flash_card.errors, status: :unprocessable_entity
+    end
   end
 
   def answer
     flash_card = FlashCard.find(params[:id])
+
     if params.has_key? :response_quality
       flash_card.answer!(params[:response_quality])
     end
+
     head :no_content
   end
 

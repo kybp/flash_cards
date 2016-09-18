@@ -4,3 +4,7 @@
 //= require bootstrap-sass-official
 //= require angular
 //= require_tree .
+
+$(document).on('ajax:success', function() {
+  $(':text').val('')
+})
