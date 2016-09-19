@@ -10,6 +10,27 @@ app.directive('focusOn', ['$timeout', function($timeout) {
   }
 }])
 
+app.controller('ManagementController',
+         ['$http', '$scope',
+  function($http,   $scope) {
+
+  $http.get('/flash_cards.json')
+    .then(function(response) {
+      $scope.cards = response.data
+    }, function(response) {
+      alert('error fetching card: ' + response.status)
+    })
+
+  $scope.deleteCard = function(card) {
+    $http.delete('/flash_cards/' + card.id)
+      .then(function() {
+        $scope.cards.splice($scope.cards.indexOf(card), 1)
+      }, function(response) {
+        alert('error deleting card: ' + response.status)
+      })
+  }
+}])
+
 app.controller('ReviewController',
          ['$http', '$scope', '$timeout',
   function($http,   $scope,   $timeout) {

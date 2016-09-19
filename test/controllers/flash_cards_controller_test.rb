@@ -84,6 +84,17 @@ class FlashCardsControllerTest < ControllerTestCase
     assert_response :unprocessable_entity
   end
 
+  test 'getting manage for signed in user returns 200 OK' do
+    sign_in @user
+    get :manage
+    assert_response :ok
+  end
+
+  test 'getting manage redirects unauthenticated users to sign in page' do
+    get :manage
+    assert_redirected_to new_user_session_path
+  end
+
   test 'deleting valid flash card returns 200 OK' do
     sign_in @user
     delete :destroy, params: { id: @flash_card.id }

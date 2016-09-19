@@ -16,6 +16,9 @@ class FlashCardsController < ApplicationController
     end
   end
 
+  def manage
+  end
+
   def next
     cards = FlashCard
       .where(user: current_user)

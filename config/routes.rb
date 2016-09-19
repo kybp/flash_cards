@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  get  '/flash_cards/manage',     to: 'flash_cards#manage'
   get  '/flash_cards/next',       to: 'flash_cards#next'
   post '/flash_cards/:id/answer', to: 'flash_cards#answer'
   resources :flash_cards
