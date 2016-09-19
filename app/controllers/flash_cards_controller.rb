@@ -35,6 +35,16 @@ class FlashCardsController < ApplicationController
     end
   end
 
+  def show
+    card = FlashCard.where(user: current_user, id: params[:id]).first
+
+    if card.nil?
+      head :not_found
+    else
+      render json: card
+    end
+  end
+
   def update
     card = FlashCard.where(user: current_user, id: params[:id]).first
 

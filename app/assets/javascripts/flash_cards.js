@@ -2,7 +2,7 @@ const app = angular.module('flashCards', [])
 
 app.directive('clickToEdit', function() {
   return {
-    scope: { field: '=', onSubmit: '&' },
+    scope: { field: '=', onSubmit: '&', onCancel: '&' },
 
     controller: ['$scope', function($scope) {
       this.editing = false
@@ -19,6 +19,11 @@ app.directive('clickToEdit', function() {
         this.editing = false
         $scope.onSubmit()
       }
+
+      this.cancel = function() {
+        this.editing = false
+        $scope.onCancel()
+      }
     }],
 
     controllerAs: '$ctrl',
@@ -33,10 +38,24 @@ app.directive('clickToEdit', function() {
       <form ng-show="$ctrl.editing" ng-submit="$ctrl.submit()">
         <input type="text"
                ng-model="field"
+               on-escape-key="$ctrl.cancel()"
                focus-on="$ctrl.editing"
                class="form-control" />
       </form>
     `
+  }
+})
+
+app.directive('onEscapeKey', function() {
+  const escapeKey = 27
+
+  return function(scope, element, attrs) {
+    element.bind('keydown', function(event) {
+      if (event.which === escapeKey) {
+        event.preventDefault()
+        scope.$apply(attrs.onEscapeKey)
+      }
+    })
   }
 })
 
@@ -73,6 +92,13 @@ app.controller('ManagementController',
         $scope.cards.splice($scope.cards.indexOf(card), 1)
       }, function(response) {
         alert('error deleting card: ' + response.status)
+      })
+  }
+
+  $scope.resetCard = function(card) {
+    $http.get('/flash_cards/' + card.id)
+      .then(function(response) {
+        $scope.cards[$scope.cards.indexOf(card)] = response.data
       })
   }
 

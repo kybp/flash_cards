@@ -22,7 +22,7 @@ class FlashCardsControllerTest < ControllerTestCase
     }
   end
 
-  test 'getting index for signed in user returns 200 OK' do
+  test 'getting index for authenticated users returns 200 OK' do
     sign_in @user
     get :index
     assert_response :ok
@@ -60,7 +60,7 @@ class FlashCardsControllerTest < ControllerTestCase
     assert_response :unprocessable_entity
   end
 
-  test 'getting manage for signed in user returns 200 OK' do
+  test 'getting manage for authenticated user returns 200 OK' do
     sign_in @user
     get :manage
     assert_response :ok
@@ -110,5 +110,17 @@ class FlashCardsControllerTest < ControllerTestCase
     flash_card = @saved_flash_card.merge({ question: '' })
     put :update, params: { id: @flash_card.id, flash_card: flash_card }
     assert_response :unprocessable_entity
+  end
+
+  test 'getting show for valid user returns 200 OK' do
+    sign_in @user
+    get :show, params: { id: @flash_card.id }
+    assert_response :ok
+  end
+
+  test 'getting show for nonexistent user returns 404 not found' do
+    sign_in @user
+    get :show, params: { id: @invalid_id }
+    assert_response :not_found
   end
 end

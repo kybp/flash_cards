@@ -5,12 +5,14 @@
 
         <td>
           <click-to-edit on-submit="saveChanges(card)"
+                         on-cancel="resetCard(card)"
                          field="card.question">
           </click-to-edit>
         </td>
 
         <td>
           <click-to-edit on-submit="saveChanges(card)"
+                         on-cancel="resetCard(card)"
                          field="card.answer">
           </click-to-edit>
         </td>
