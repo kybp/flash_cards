@@ -1,14 +1,8 @@
 class FlashCardsController < ApplicationController
   before_action :authenticate_user!
-  PAGE_LIMIT = 25
 
   def index
-    offset = (params[:page] || 0).to_i
-
-    cards = FlashCard
-        .where(user: current_user)
-        .offset(offset * PAGE_LIMIT)
-        .limit(PAGE_LIMIT)
+    cards = FlashCard.where(user: current_user)
 
     respond_to do |format|
       format.html {}

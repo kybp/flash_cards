@@ -34,35 +34,9 @@ class FlashCardsControllerTest < ControllerTestCase
   test 'getting index returns JSON list of flash cards' do
     sign_in @user
     get 'index', format: :json
-    actual_count   = JSON.parse(@response.body).length
+    returned_count = JSON.parse(@response.body).length
     expected_count = FlashCard.where(user: @user).count
-    assert_equal expected_count, actual_count
-  end
-
-  test "JSON index returns at most #{PAGE_LIMIT} flash cards" do
-    (PAGE_LIMIT + 10).times do
-      FlashCard.create!(
-        question: SecureRandom.hex, answer: SecureRandom.hex, user: @user)
-    end
-
-    sign_in @user
-    get 'index', format: :json
-    assert_equal PAGE_LIMIT, JSON.parse(@response.body).length
-  end
-
-  test 'JSON index accepts page argument' do
-    over_limit = 10
-
-    (PAGE_LIMIT + over_limit).times do
-      FlashCard.create!(
-        question: SecureRandom.hex, answer: SecureRandom.hex, user: @user)
-    end
-
-    sign_in @user
-    get 'index', format: :json, params: { page: 1 }
-    actual_count   = JSON.parse(@response.body).length
-    expected_count = FlashCard.count - PAGE_LIMIT
-    assert_equal expected_count, actual_count
+    assert_equal expected_count, returned_count
   end
 
   test 'posting valid flash card returns 201 created' do
