@@ -2,8 +2,19 @@
   <table class="table table-hover">
     <tbody>
       <tr ng-repeat="card in cards">
-        <td>{{card.question}}</td>
-        <td>{{card.answer}}</td>
+
+        <td>
+          <click-to-edit on-submit="saveChanges(card)"
+                         field="card.question">
+          </click-to-edit>
+        </td>
+
+        <td>
+          <click-to-edit on-submit="saveChanges(card)"
+                         field="card.answer">
+          </click-to-edit>
+        </td>
+
         <td style="text-align: right">
           <button class="btn btn-danger btn-xs" 
                   ng-click="deleteCard(card)">

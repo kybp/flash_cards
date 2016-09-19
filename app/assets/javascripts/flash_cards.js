@@ -1,10 +1,54 @@
 const app = angular.module('flashCards', [])
 
+app.directive('clickToEdit', function() {
+  return {
+    scope: { field: '=', onSubmit: '&' },
+
+    controller: ['$scope', function($scope) {
+      this.editing = false
+
+      this.startEditing = function() {
+        this.editing = true
+      }
+
+      this.stopEditing = function() {
+        this.editing = false
+      }
+
+      this.submit = function() {
+        this.editing = false
+        $scope.onSubmit()
+      }
+    }],
+
+    controllerAs: '$ctrl',
+
+    template: `
+      <span ng-hide="$ctrl.editing"
+            ng-click="$ctrl.startEditing()"
+            class="h4">
+        {{field}}
+      </span>
+
+      <form ng-show="$ctrl.editing" ng-submit="$ctrl.submit()">
+        <input type="text"
+               ng-model="field"
+               focus-on="$ctrl.editing"
+               class="form-control" />
+      </form>
+    `
+  }
+})
+
 app.directive('focusOn', ['$timeout', function($timeout) {
   return function(scope, elements, attrs) {
     scope.$watch(attrs.focusOn, function(value) {
       $timeout(function() {
-        if (value) elements[0].focus()
+        if (value) {
+          elements[0].focus()
+        } else {
+          elements[0].blur()
+        }
       })
     })
   }
@@ -13,6 +57,8 @@ app.directive('focusOn', ['$timeout', function($timeout) {
 app.controller('ManagementController',
          ['$http', '$scope',
   function($http,   $scope) {
+
+  $scope.cards = []
 
   $http.get('/flash_cards.json')
     .then(function(response) {
@@ -28,6 +74,13 @@ app.controller('ManagementController',
       }, function(response) {
         alert('error deleting card: ' + response.status)
       })
+  }
+
+  $scope.saveChanges = function(card) {
+    $http.put('/flash_cards/' + card.id, {
+      question: card.question,
+      answer:   card.answer
+    })
   }
 }])
 
