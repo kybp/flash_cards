@@ -1,27 +1,3 @@
-<script type="text/javascript">
-$(document).ready(function() {
-  $('.dropdown').on('shown.bs.dropdown', function() {
-    $('#flash_card_question').focus()
-  })
-})
-</script>
-
-<% content_for :controls do %>
-  <div class="dropdown">
-    <button class="btn btn-lg btn-success dropdown-toggle"
-            data-toggle="dropdown">
-      <span class="glyphicon glyphicon-plus"></span>
-      Add card
-    </button>
-    <div class="dropdown-menu dropdown-menu-right dropdown-form">
-      <%= render 'new_flash_card_form' %>
-    </div>
-  </div>
-
-  <%= link_to 'Sign out', destroy_user_session_path, method: :delete,
-      class: 'btn btn-lg btn-danger' %>
-<% end %>
-
 <div ng-app="flashCards" ng-controller="flashCardController"
      class="vertical-center">
   <h2 ng-hide="card" 
