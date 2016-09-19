@@ -9,13 +9,15 @@ class FlashCardsControllerTest < ControllerTestCase
     @user       = users(:user_one)
     @flash_card = flash_cards(:flash_card_one)
     @user_cards = "FlashCard.where(user_id: #{@user.id}).count"
+    @invalid_id = 1
+
+    @saved_flash_card = {
+      question: @flash_card.question,
+      answer:   @flash_card.answer
+    }
 
     @unsaved_flash_card = {
       question: "123#{@flash_card.question}",
-      answer:   @flash_card.answer
-    }
-    @invalid_flash_card = {
-      question: @flash_card.question,
       answer:   @flash_card.answer
     }
   end
@@ -52,9 +54,9 @@ class FlashCardsControllerTest < ControllerTestCase
     end
   end
 
-  test 'posting invalid flash card returns 422 unprocessable entity' do
+  test 'posting duplicate flash card returns 422 unprocessable entity' do
     sign_in @user
-    post :create, params: { flash_card: @invalid_flash_card }
+    post :create, params: { flash_card: @saved_flash_card }
     assert_response :unprocessable_entity
   end
 
@@ -76,11 +78,8 @@ class FlashCardsControllerTest < ControllerTestCase
   end
 
   test 'deleting nonexistent flash card returns 404 not found' do
-    bad_id = 1
-    assert_nil FlashCard.where(id: bad_id).first
-
     sign_in @user
-    delete :destroy, params: { id: bad_id }
+    delete :destroy, params: { id: @invalid_id }
     assert_response :not_found
   end
 
@@ -89,5 +88,27 @@ class FlashCardsControllerTest < ControllerTestCase
     assert_difference(@user_cards, -1) do
       delete :destroy, params: { id: @flash_card.id }
     end
+  end
+
+  test 'putting flash card updates field' do
+    sign_in @user
+    new_question = "123#{@flash_card.question}"
+    flash_card   = @saved_flash_card.merge({ question: new_question })
+    put :update, params: { id: @flash_card.id, flash_card: flash_card }
+    @flash_card.reload
+    assert_equal new_question, @flash_card.question
+  end
+
+  test 'putting nonexistent flash card returns 404 not found' do
+    sign_in @user
+    put :update, params: { id: @invalid_id, flash_card: @unsaved_flash_card }
+    assert_response :not_found
+  end
+
+  test 'putting invalid flash card returns 422 unprocessable entity' do
+    sign_in @user
+    flash_card = @saved_flash_card.merge({ question: '' })
+    put :update, params: { id: @flash_card.id, flash_card: flash_card }
+    assert_response :unprocessable_entity
   end
 end

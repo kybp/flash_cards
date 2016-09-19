@@ -35,6 +35,18 @@ class FlashCardsController < ApplicationController
     end
   end
 
+  def update
+    card = FlashCard.where(user: current_user, id: params[:id]).first
+
+    return head :not_found if card.nil?
+
+    if card.update_attributes(flash_card_params)
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
+
   def destroy
     card = FlashCard.where(user: current_user, id: params[:id]).first
 
