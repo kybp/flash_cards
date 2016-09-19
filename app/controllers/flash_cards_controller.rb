@@ -38,6 +38,17 @@ class FlashCardsController < ApplicationController
     end
   end
 
+  def destroy
+    card = FlashCard.where(user: current_user, id: params[:id]).first
+
+    if card.nil?
+      head :not_found
+    else
+      card.destroy
+      head :ok
+    end
+  end
+
   def answer
     flash_card = FlashCard.find(params[:id])
 

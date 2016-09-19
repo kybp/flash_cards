@@ -2,11 +2,14 @@ require 'test_helper'
 
 class FlashCardsControllerTest < ControllerTestCase 
   include Devise::Test::ControllerHelpers
+
   PAGE_LIMIT = 25
 
   def setup
     @user       = users(:user_one)
     @flash_card = flash_cards(:flash_card_one)
+    @user_cards = "FlashCard.where(user_id: #{@user.id}).count"
+
     @unsaved_flash_card = {
       question: "123#{@flash_card.question}",
       answer:   @flash_card.answer
@@ -20,7 +23,7 @@ class FlashCardsControllerTest < ControllerTestCase
   test 'getting index for signed in user returns 200 OK' do
     sign_in @user
     get :index
-    assert_response :success
+    assert_response :ok
   end
 
   test 'getting index redirects unauthenticated users to sign in page' do
@@ -70,7 +73,7 @@ class FlashCardsControllerTest < ControllerTestCase
 
   test 'posting valid flash card saves it in database' do
     sign_in @user
-    assert_difference("FlashCard.where(user_id: #{@user.id}).count") do
+    assert_difference(@user_cards) do
       post :create, params: { flash_card: @unsaved_flash_card }
     end
   end
@@ -79,5 +82,27 @@ class FlashCardsControllerTest < ControllerTestCase
     sign_in @user
     post :create, params: { flash_card: @invalid_flash_card }
     assert_response :unprocessable_entity
+  end
+
+  test 'deleting valid flash card returns 200 OK' do
+    sign_in @user
+    delete :destroy, params: { id: @flash_card.id }
+    assert_response :ok
+  end
+
+  test 'deleting nonexistent flash card returns 404 not found' do
+    bad_id = 1
+    assert_nil FlashCard.where(id: bad_id).first
+
+    sign_in @user
+    delete :destroy, params: { id: bad_id }
+    assert_response :not_found
+  end
+
+  test 'deleting flash card removes it from the database' do
+    sign_in @user
+    assert_difference(@user_cards, -1) do
+      delete :destroy, params: { id: @flash_card.id }
+    end
   end
 end
