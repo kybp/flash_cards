@@ -1,5 +1,6 @@
-const focusOn =
-['$timeout', function($timeout) {
+const app = angular.module('flashCards', [])
+
+app.directive('focusOn', ['$timeout', function($timeout) {
   return function(scope, elements, attrs) {
     scope.$watch(attrs.focusOn, function(value) {
       $timeout(function() {
@@ -7,10 +8,12 @@ const focusOn =
       })
     })
   }
-}]
+}])
 
-const flashCardController =
-['$http', '$scope', '$timeout', function($http, $scope, $timeout) {
+app.controller('ReviewController',
+         ['$http', '$scope', '$timeout',
+  function($http,   $scope,   $timeout) {
+
   const NEXT_CARD_URL    = '/flash_cards/next.json'
   const SECONDS_PER_CARD = 10
   const TICKS_PER_SECOND = 15
@@ -108,9 +111,4 @@ const flashCardController =
       $scope.card = response.data
     }
   )
-}]
-
-angular
-  .module('flashCards', [])
-  .controller('flashCardController', flashCardController)
-  .directive('focusOn', focusOn)
+}])
