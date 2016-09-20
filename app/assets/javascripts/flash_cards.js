@@ -1,4 +1,7 @@
 const app = angular.module('flashCards', [])
+$(document).on('turbolinks:load', function() {
+  angular.bootstrap(document.body, ['flashCards'])
+})
 
 app.directive('clickToEdit', function() {
   return {

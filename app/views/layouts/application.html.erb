@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>FlashCards</title>
+    <title>Flash Cards</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -19,7 +19,7 @@
       <% end %>
     <% end %>
 
-    <h1>Flash Cards
+    <h1><%= link_to 'Flash Cards', root_path, class: 'h1' %>
       <div id="controls" class="pull-right">
         <%= yield :controls %>
       </div>
