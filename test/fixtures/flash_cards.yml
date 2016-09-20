@@ -3,3 +3,9 @@ flash_card_one:
   answer:   'an example answer'
   user:     :user_one
   next_review_date: <%= Date.today %>
+
+flash_card_two:
+  question: 'an example question'
+  answer:   'an example answer'
+  user:     :user_two
+  next_review_date: <%= Date.today %>

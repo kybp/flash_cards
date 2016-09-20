@@ -26,7 +26,20 @@ class FlashCard < ApplicationRecord
     save!
   end
 
+  def self.search(user:, term:)
+    return [] if term == ''
+
+    self.where(user: user)
+        .where('question ilike ? or answer ilike ?',
+               "%#{escape_wildcards(term)}%",
+               "%#{escape_wildcards(term)}%")
+  end
+
   private
+
+  def self.escape_wildcards(term)
+    term.gsub(/[%_]/) { |c| "\\#{c}" }
+  end
 
   def next_review_interval!
     current_interval = review_interval

@@ -5,3 +5,7 @@ user_one:
 user_two:
   email: name_two@example.com
   encrypted_password: <%= User.new.send(:password_digest, "asdfasdf") %>
+
+user_with_no_cards:
+  email: name_three@example.com
+  encrypted_password: <%= User.new.send(:password_digest, "asdfasdf") %>
