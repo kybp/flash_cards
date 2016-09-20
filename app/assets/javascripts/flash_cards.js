@@ -108,7 +108,11 @@ app.controller('ManagementController',
     $http.put('/flash_cards/' + card.id, {
       question: card.question,
       answer:   card.answer
-    })
+    }).then(function() {},
+      function() {
+        $scope.resetCard(card)
+        alert('error saving card')
+      })
   }
 
   $scope.search = function(term) {
