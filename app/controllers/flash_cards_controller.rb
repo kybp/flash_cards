@@ -78,6 +78,16 @@ class FlashCardsController < ApplicationController
     head :no_content
   end
 
+  def search
+    term = params[:term]
+
+    if term.nil?
+      head :bad_request
+    else
+      render json: FlashCard.search(user: current_user, term: term)
+    end
+  end
+
   private
 
   def flash_card_params

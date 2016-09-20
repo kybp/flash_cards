@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get  '/flash_cards/manage',     to: 'flash_cards#manage'
   get  '/flash_cards/next',       to: 'flash_cards#next'
+  get  '/flash_cards/search',     to: 'flash_cards#search'
   post '/flash_cards/:id/answer', to: 'flash_cards#answer'
   resources :flash_cards
 

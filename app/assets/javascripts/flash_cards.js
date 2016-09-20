@@ -79,12 +79,14 @@ app.controller('ManagementController',
 
   $scope.cards = []
 
-  $http.get('/flash_cards.json')
-    .then(function(response) {
-      $scope.cards = response.data
-    }, function(response) {
-      alert('error fetching card: ' + response.status)
-    })
+  $scope.getCards = function() {
+    $http.get('/flash_cards.json')
+      .then(function(response) {
+        $scope.cards = response.data
+      }, function(response) {
+        alert('error fetching cards: ' + response.status)
+      })
+  }
 
   $scope.deleteCard = function(card) {
     $http.delete('/flash_cards/' + card.id)
@@ -108,6 +110,21 @@ app.controller('ManagementController',
       answer:   card.answer
     })
   }
+
+  $scope.search = function(term) {
+    if (term.length === 0) {
+      $scope.getCards()
+    } else {
+      $http.get('/flash_cards/search', { params: { term: term } })
+        .then(function(response) {
+          $scope.cards = response.data
+        }, function(response) {
+          alert('error fetching cards: ' + response.status)
+        })
+    }
+  }
+
+  $scope.getCards()
 }])
 
 app.controller('ReviewController',
@@ -176,7 +193,8 @@ app.controller('ReviewController',
 
   const saveResponseQuality = function(quality) {
     const url  = '/flash_cards/' + $scope.card.id + '/answer'
-    const data = { response_quality: quality || $scope.secondsLeft / 3 + 2 }
+    const data =
+      { response_quality: quality || $scope.secondsLeft / 3 + 2 }
     $http.post(url, JSON.stringify(data))
   }
 

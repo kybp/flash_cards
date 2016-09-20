@@ -10,6 +10,7 @@ class FlashCardsControllerTest < ControllerTestCase
     @flash_card = flash_cards(:flash_card_one)
     @user_cards = "FlashCard.where(user_id: #{@user.id}).count"
     @invalid_id = 1
+    @user_with_no_cards = users(:user_with_no_cards)
 
     @saved_flash_card = {
       question: @flash_card.question,
@@ -122,5 +123,29 @@ class FlashCardsControllerTest < ControllerTestCase
     sign_in @user
     get :show, params: { id: @invalid_id }
     assert_response :not_found
+  end
+
+  test 'getting search with term returns 200 OK' do
+    sign_in @user
+    get :search, params: { term: 'foo' }
+    assert_response :ok
+  end
+
+  test 'getting search without term returns 400 bad request' do
+    sign_in @user
+    get :search
+    assert_response :bad_request
+  end
+
+  test 'getting search returns matching cards' do
+    sign_in @user
+    get :search, params: { term: @flash_card.question }
+    assert_equal 1, JSON.parse(@response.body).length
+  end
+
+  test 'getting search returns only cards belonging to the current user' do
+    sign_in @user_with_no_cards
+    get :search, params: { term: @flash_card.question }
+    assert_equal 0, JSON.parse(@response.body).length
   end
 end
