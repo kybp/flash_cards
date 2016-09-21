@@ -31,21 +31,21 @@ app.directive('clickToEdit', function() {
 
     controllerAs: '$ctrl',
 
-    template: `
-      <span ng-hide="$ctrl.editing"
-            ng-click="$ctrl.startEditing()"
-            class="h4">
-        {{field}}
-      </span>
-
-      <form ng-show="$ctrl.editing" ng-submit="$ctrl.submit()">
-        <input type="text"
-               ng-model="field"
-               on-escape-key="$ctrl.cancel()"
-               focus-on="$ctrl.editing"
-               class="form-control" />
-      </form>
-    `
+    template: '\
+      <span ng-hide="$ctrl.editing"\
+            ng-click="$ctrl.startEditing()"\
+            class="h4">\
+        {{field}}\
+      </span>\
+\
+      <form ng-show="$ctrl.editing" ng-submit="$ctrl.submit()">\
+        <input type="text"\
+               ng-model="field"\
+               on-escape-key="$ctrl.cancel()"\
+               focus-on="$ctrl.editing"\
+               class="form-control" />\
+      </form>\
+    '
   }
 })
 
@@ -141,7 +141,7 @@ app.controller('ReviewController',
   const NEXT_CARD_URL    = '/flash_cards/next.json'
   const SECONDS_PER_CARD = 10
   const TICKS_PER_SECOND = 15
-  let ticks = 0
+  var ticks = 0
 
   $scope.guess        = ''
   $scope.beganReview  = false
@@ -165,7 +165,7 @@ app.controller('ReviewController',
       })
   }
 
-  let timeout
+  var timeout
 
   const scheduleTimeout = function() {
     const ms = 1000 / TICKS_PER_SECOND
