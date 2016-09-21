@@ -10,3 +10,64 @@
     </div>
   </div>
 <% end %>
+
+<div class="well">
+  <h1 class="text-center">
+    Learn More Efficiently With Spaced Repetition
+  </h1>
+
+  <p class="lead">
+    Repetition is the mother of learning, but simply going over the
+    same material again and again isn't enough&mdash;it makes you
+    waste time and effort by targeting only your short term memory;
+    it's the same reason cramming for exams doesn't work. Countless
+    studies have shown that if we want things to stay with us forever,
+    it's best if we go as long as possible between repetitions before
+    forgetting completely, just enough that your brain has to work to
+    remember. When things are still fresh in your memory, repeating
+    them doesn't help, because your memory hasn't had time to atrophy
+    yet&mdash;you don't have to work to remember, and it's the working
+    to remember that makes it stay with you. If it wasn't enough that
+    things stay with you longer, that also means you spend less time
+    studying them, so you have more time to learn other things.
+  </p>
+
+  <p class="lead">
+    This website will help you learn by scheduling your study for
+    you. All you do is fill in flash cards with questions and answers,
+    then whenever you come back, we will tell you what cards are due
+    for review, quiz you on them, and decide when you should study
+    them next, based off of sound scientific data. To get started, all
+    you need to do is sign up and start adding cards.
+  </p>
+</div>
+
+<div class="col-md-6 col-md-offset-3 text-center">
+  <%= form_for :user, url: user_registration_path,
+    class: 'col-md-5' do |f| %>
+    <%= devise_error_messages! %>
+
+    <div class="form-group">
+      <%= f.label       :email, class: 'sr-only' %>
+      <%= f.email_field :email, class: 'form-control',
+                        placeholder: 'Email' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label          :password, class: 'sr-only' %>
+      <%= f.password_field :password, class: 'form-control',
+                           placeholder: 'Password',
+                           autocomplete: "off" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label          :password_confirmation, class: 'sr-only' %>
+      <%= f.password_field :password_confirmation, class: 'form-control',
+                           placeholder: 'Password (again)',
+                           autocomplete: "off" %>
+    </div>
+
+    <%= f.submit 'Sign up', class: 'btn btn-lg btn-primary' %>
+  <% end %>
+  </div>
+</div>
