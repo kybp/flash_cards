@@ -1,8 +1,6 @@
-/*
- *= require_tree .
- *= require_self
- *= require bootstrap-sass-official
- */
+$icon-font-path: "bootstrap-sass-official/assets/fonts/bootstrap/";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
 div.dropdown-form {
     min-width:      230px;
