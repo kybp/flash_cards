@@ -1,17 +1,3 @@
-<% content_for :head do %>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('.dropdown').on('shown.bs.dropdown', function() {
-        $('#flash-card-question').focus()
-      })
-
-      $('.dropdown').on('ajax:success', function() {
-        $('#flash-card-question').focus()
-      })
-    })
-  </script>
-<% end %>
-
 <% content_for :controls do %>
   <div class="dropdown">
     <button class="btn btn-lg btn-success dropdown-toggle"

@@ -1,3 +1,17 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+   $(document).on('turbolinks:load', function() {
+     $('.dropdown').on('shown.bs.dropdown', function() {
+       $('#flash-card-question').focus()
+     })
+
+     $('.dropdown').on('ajax:success', function() {
+       $('#flash-card-question').focus()
+     })
+   })
+  </script>
+<% end %>
+
 <%= form_for :flash_card, remote: true, url: flash_cards_path do |f| %>
   <div class="form-group">
     <%= f.label      :question, class: 'sr-only' %>
