@@ -57,10 +57,12 @@ class FlashCard < ApplicationRecord
   end
 
   def next_easiness!(response_quality)
-    unless response_quality.between?(0, 5)
+    if response_quality < 0
       raise(ArgumentError,
-	    "response_quality not in 0..5: #{response_quality}")
+	    "negative response_quality: #{response_quality}")
     end
+
+    response_quality = 5 if response_quality > 5
 
     self.easiness = [1.1, easiness].max +
       (0.1 - (5 - response_quality) *

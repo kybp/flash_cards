@@ -50,17 +50,17 @@ class FlashCardTest < SupportTestCase
     end
   end
 
-  test '#answer! raises ArgumentError on response quality > 5' do
-    assert_raises(ArgumentError) do
-      @valid_flash_card.answer!(6)
-    end
-  end
-
   test '#answer! accepts response qualities in 1..5' do
     (1..5).each do |i|
       assert_nothing_raised do
         @valid_flash_card.answer!(i)
       end
+    end
+  end
+
+  test '#answer! accepts response qualities above 5' do
+    assert_nothing_raised do
+      @valid_flash_card.answer!(6)
     end
   end
 

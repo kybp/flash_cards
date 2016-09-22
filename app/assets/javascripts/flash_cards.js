@@ -172,17 +172,12 @@ app.controller('ReviewController',
     timeout = $timeout($scope.onTimeout, ms)
   }
 
-  const waitBetweenCards = function() {
-    document.getElementById('guess-input').disabled = true
-    $scope.betweenCards = true
-  }
-
   $scope.onTimeout = function() {
     --ticks
     if (ticks % TICKS_PER_SECOND === 0) --$scope.secondsLeft
 
     if ($scope.secondsLeft <= 0) {
-      waitBetweenCards()
+      $scope.submitAnswer(true)
     } else {
       scheduleTimeout()
     }
@@ -192,17 +187,20 @@ app.controller('ReviewController',
     return $scope.guess === $scope.card.answer
   }
 
-  $scope.submitAnswer = function() {
-    if ($scope.guess === '') return
-    saveResponseQuality(checkAnswer() ? null : 1)
-    waitBetweenCards()
-  }
+  $scope.submitAnswer = function(allowEmpty) {
+    if (! allowEmpty && $scope.guess === '') return
+    $timeout.cancel(timeout)
 
-  const saveResponseQuality = function(quality) {
     const url  = '/flash_cards/' + $scope.card.id + '/answer'
-    const data =
-      { response_quality: quality || $scope.secondsLeft / 3 + 2 }
+    const data = {
+      response_quality: checkAnswer() ? $scope.secondsLeft / 3 + 2 : 1
+    }
+
     $http.post(url, JSON.stringify(data))
+      .then(function() {
+        document.getElementById('guess-input').disabled = true
+        $scope.betweenCards = true
+      })
   }
 
   $scope.answerStatus = function() {
