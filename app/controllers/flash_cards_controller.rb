@@ -69,13 +69,18 @@ class FlashCardsController < ApplicationController
   end
 
   def answer
-    flash_card = FlashCard.find(params[:id])
+    flash_card = FlashCard.where(id: params[:id]).first
+    return head :not_found if flash_card.nil?
 
-    if params.has_key? :response_quality
-      flash_card.answer!(params[:response_quality])
+    response_quality = params[:response_quality]
+    return head :bad_request if response_quality.nil?
+
+    begin
+      flash_card.answer!(response_quality.to_i)
+      head :ok
+    rescue ArgumentError
+      head :bad_request
     end
-
-    head :no_content
   end
 
   def search

@@ -148,4 +148,28 @@ class FlashCardsControllerTest < ControllerTestCase
     get :search, params: { term: @flash_card.question }
     assert_equal 0, JSON.parse(@response.body).length
   end
+
+  test 'posting answer for valid flash card returns 200 OK' do
+    sign_in @user
+    post :answer, params: { id: @flash_card.id, response_quality: 4 }
+    assert_response :ok
+  end
+
+  test 'posting answer for nonexistent flash card returns 404 not found' do
+    sign_in @user
+    post :answer, params: { id: @invalid_id, response_quality: 4 }
+    assert_response :not_found
+  end
+
+  test 'posting answer with response quality < 0 returns 400 bad request' do
+    sign_in @user
+    post :answer, params: { id: @flash_card.id, response_quality: -1 }
+    assert_response :bad_request
+  end
+
+  test 'posting answer with no response_quality returns 400 bad request' do
+    sign_in @user
+    post :answer, params: { id: @flash_card.id }
+    assert_response :bad_request
+  end
 end
