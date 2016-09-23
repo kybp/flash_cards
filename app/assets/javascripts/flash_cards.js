@@ -81,6 +81,7 @@ app.controller('ManagementController',
   function($http,   $scope) {
 
   $scope.cards = []
+  $scope.term  = ''
 
   $scope.getCards = function() {
     $http.get('/flash_cards.json')
@@ -118,11 +119,15 @@ app.controller('ManagementController',
       })
   }
 
-  $scope.search = function(term) {
-    if (term.length === 0) {
+  $scope.noCards = function() {
+    return $scope.cards.length === 0 && $scope.term === ''
+  }
+
+  $scope.search = function() {
+    if ($scope.term.length === 0) {
       $scope.getCards()
     } else {
-      $http.get('/flash_cards/search', { params: { term: term } })
+      $http.get('/flash_cards/search', { params: { term: $scope.term } })
         .then(function(response) {
           $scope.cards = response.data
         }, function(response) {

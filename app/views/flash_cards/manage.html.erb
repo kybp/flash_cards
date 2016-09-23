@@ -1,34 +1,49 @@
 <div ng-controller="ManagementController">
 
-  <input type="text" class="form-control"
-         ng-model="term" ng-change="search(term)"
-         placeholder="Search flash cards..." />
+  <p class="lead">
+    This is where you can manage your saved flash cards. Click on a
+    question or answer to edit it, and press Enter to save your
+    changes, or Esc to cancel.
+  </p>
 
-  <table class="table table-hover">
-    <tbody>
-      <tr ng-repeat="card in cards">
+  <div ng-show="noCards()">
+    <p class="well" style="text-align: center">
+      You don't have any flash cards saved yet. Click the "Add card"
+      button at the top of the page to get started!
+    </p>
+  </div>
 
-        <td>
-          <click-to-edit on-submit="saveChanges(card)"
-                         on-cancel="resetCard(card)"
-                         field="card.question">
-          </click-to-edit>
-        </td>
+  <div ng-hide="noCards()">
+    <input type="text" class="form-control"
+           ng-model="term" ng-change="search()"
+           placeholder="Search flash cards..." />
 
-        <td>
-          <click-to-edit on-submit="saveChanges(card)"
-                         on-cancel="resetCard(card)"
-                         field="card.answer">
-          </click-to-edit>
-        </td>
+    <table class="table table-hover">
+      <tbody>
+        <tr ng-repeat="card in cards">
 
-        <td style="text-align: right">
-          <button class="btn btn-danger btn-xs" 
-                  ng-click="deleteCard(card)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td>
+            <click-to-edit on-submit="saveChanges(card)"
+                           on-cancel="resetCard(card)"
+                           field="card.question">
+            </click-to-edit>
+          </td>
+
+          <td>
+            <click-to-edit on-submit="saveChanges(card)"
+                           on-cancel="resetCard(card)"
+                           field="card.answer">
+            </click-to-edit>
+          </td>
+
+          <td style="text-align: right">
+            <button class="btn btn-danger btn-xs"
+                    ng-click="deleteCard(card)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
